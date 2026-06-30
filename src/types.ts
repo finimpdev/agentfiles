@@ -16,7 +16,7 @@ export interface SkillPath {
 }
 
 export type SkillType = "skill" | "command" | "agent" | "rule" | "memory";
-export type ScanPattern = "directory-with-skillmd" | "flat-md" | "mdc";
+export type ScanPattern = "directory-with-skillmd" | "flat-md" | "mdc" | "marketplace";
 
 export interface SkillItem {
 	id: string;
