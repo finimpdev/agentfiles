@@ -143,6 +143,41 @@ function scanFlatMd(
 	return items;
 }
 
+function scanMarketplace(
+	baseDir: string,
+	toolId: string,
+	namingMode: NamingMode = "auto"
+): SkillItem[] {
+	if (!existsSync(baseDir)) return [];
+	const items: SkillItem[] = [];
+
+	try {
+		for (const entry of readdirSync(baseDir, { withFileTypes: true })) {
+			if (!entry.isDirectory() && !entry.isSymbolicLink()) continue;
+			const marketplacePath = join(baseDir, entry.name);
+
+			// Scan skills subfolder
+			const skillsPath = join(marketplacePath, "skills");
+			if (existsSync(skillsPath)) {
+				items.push(...scanDirectoryWithSkillMd(skillsPath, "skill", toolId, namingMode));
+			}
+
+			// Scan commands subfolder
+			const commandsPath = join(marketplacePath, "commands");
+			if (existsSync(commandsPath)) {
+				items.push(...scanFlatMd(commandsPath, "command", toolId, namingMode));
+			}
+
+			// Scan agents subfolder
+			const agentsPath = join(marketplacePath, "agents");
+			if (existsSync(agentsPath)) {
+				items.push(...scanFlatMd(agentsPath, "agent", toolId, namingMode));
+			}
+		}
+	} catch { /* permission errors */ }
+	return items;
+}
+
 function scanMdc(
 	baseDir: string,
 	type: SkillType,
@@ -214,6 +249,8 @@ function scanPath(sp: SkillPath, toolId: string, namingMode: NamingMode = "auto"
 			return scanFlatMd(sp.baseDir, sp.type, toolId, namingMode);
 		case "mdc":
 			return scanMdc(sp.baseDir, sp.type, toolId, namingMode);
+		case "marketplace":
+			return scanMarketplace(sp.baseDir, toolId, namingMode);
 	}
 }
 

@@ -227,6 +227,7 @@ export const TOOL_TO_AGENT: Record<string, string> = {
 	"pi": "pi",
 	"global-agents": "claude-code",
 	"aider": "claude-code",
+	"claude-plugins": "claude-code",
 };
 
 export function installSkill(

@@ -305,4 +305,20 @@ export const TOOL_CONFIGS: ToolConfig[] = [
 		agentPaths: [],
 		isInstalled: () => cached("aider", () => cliExists("aider")),
 	},
+	{
+		id: "claude-plugins",
+		name: "Plugins",
+		color: "#f97316",
+		icon: "plug",
+		paths: [
+			{
+				baseDir: join(HOME, ".claude", "plugins", "marketplaces"),
+				type: "skill",
+				pattern: "marketplace",
+			},
+		],
+		agentPaths: [],
+		isInstalled: () => cached("claude-plugins", () =>
+			existsSync(join(HOME, ".claude", "plugins", "marketplaces"))),
+	},
 ];
